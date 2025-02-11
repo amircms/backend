@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ParamsDto } from './dto/params.dto';
+import { UserRepository } from './user.repository';
+import { omit } from 'lodash';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private readonly userRepo: UserRepository) {}
+  async createUser(dto: CreateUserDto) {
+    const initUser = this.userRepo.create(dto);
+    return await this.userRepo.save(initUser);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAllUsers() {
+    return this.userRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findUserById(id: ParamsDto['id']) {
+    return this.userRepo.findOneBy({ id });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async updateUserById(dto: UpdateUserDto) {
+    const { id } = dto;
+    const obj = omit(dto, ['id']);
+    return await this.userRepo.update(id, obj);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async deleteUserById(id: ParamsDto['id']) {
+    return await this.userRepo.delete(id);
   }
 }
