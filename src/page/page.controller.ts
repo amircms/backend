@@ -11,40 +11,50 @@ import { PageService } from './page.service';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { ParamsDto } from './dto/params.dto';
+import { ResponseService } from '../response/response.service';
 
 @Controller('pages')
 export class PageController {
-  constructor(private readonly pageService: PageService) {}
+  constructor(
+    private readonly pageService: PageService,
+    private readonly responseService: ResponseService,
+  ) {}
 
   @Post()
-  async createPage(@Body() createPageDto: CreatePageDto) {
-    return await this.pageService.createPage(createPageDto);
+  async createPage(@Body() dto: CreatePageDto) {
+    const res = await this.pageService.createPage(dto);
+    return this.responseService.create('Page', res.id);
   }
 
   @Get()
   async findAllPages() {
-    return await this.pageService.findAllPages();
+    const res = await this.pageService.findAllPages();
+    return this.responseService.findList('Menu', res);
   }
 
   @Get(':id')
   async findPageById(@Param() params: ParamsDto) {
-    return await this.pageService.findPageById(params.id);
+    const res = await this.pageService.findPageById(params.id);
+    return this.responseService.findOne('id', res);
   }
 
   @Get('slug/:menuSlug')
   async findPageByMenuSlug(
     @Param('menuSlug') menuSlug: CreatePageDto['menuSlug'],
   ) {
-    return await this.pageService.findPageByMenuSlug(menuSlug);
+    const res = await this.pageService.findPageByMenuSlug(menuSlug);
+    return this.responseService.findOne('slug', res);
   }
 
   @Patch()
-  async updatePageById(@Body() updatePageDto: UpdatePageDto) {
-    return await this.pageService.updatePageById(updatePageDto);
+  async updatePageById(@Body() dto: UpdatePageDto) {
+    await this.pageService.updatePageById(dto);
+    return this.responseService.updateOne('id', dto.id);
   }
 
   @Delete(':id')
   async deletePageById(@Param() params: ParamsDto) {
-    return await this.pageService.deletePageById(params.id);
+    await this.pageService.deletePageById(params.id);
+    return this.responseService.deleteOne('id', params.id);
   }
 }
