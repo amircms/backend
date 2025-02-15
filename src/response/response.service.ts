@@ -26,6 +26,11 @@ export class ResponseService {
       id,
     };
   }
+  updateList(key: string) {
+    return {
+      message: `${key} is Updated successfully`,
+    };
+  }
   deleteOne(key: string, id: string | number) {
     return {
       message: `${key} is deleted successfully`,
