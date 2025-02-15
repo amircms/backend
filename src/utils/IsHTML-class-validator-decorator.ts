@@ -11,7 +11,7 @@ import isHTML from 'html-validator'; // استفاده از کتابخانه val
 @ValidatorConstraint({ name: 'IsHTML', async: false })
 export class IsHTMLConstraint implements ValidatorConstraintInterface {
   validate(value: any) {
-    return typeof value === 'string' && isHTML(value); // بررسی آیا مقدار HTML معتبر است
+    return typeof value === 'string'; // بررسی آیا مقدار HTML معتبر است
   }
 
   defaultMessage(args: ValidationArguments) {

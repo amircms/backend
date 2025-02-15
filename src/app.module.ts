@@ -20,7 +20,7 @@ import { SettingEntity } from './setting/entities/setting.entity';
       port: 5432,
       username: 'postgres',
       password: 'postgres',
-      database: 'cms',
+      database: 'amircms',
       entities: [PostEntity, PageEntity, MenuEntity, UserEntity, SettingEntity],
       synchronize: true,
     }),
