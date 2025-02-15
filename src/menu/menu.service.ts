@@ -38,8 +38,8 @@ export class MenuService {
     return await this.menuRepository.findOneBy({ id });
   }
 
-  async updateById(updateMenuDto: UpdateMenuDto) {
-    return await this.menuRepository.update(updateMenuDto.id, updateMenuDto);
+  async updateById(id: ParamsDto['id'], updateMenuDto: UpdateMenuDto) {
+    return await this.menuRepository.update(id, updateMenuDto);
   }
 
   async updateOrders(orders: UpdateOrdersMenuDto['orders']) {

@@ -39,16 +39,19 @@ export class MenuController {
     return this.responseService.findOne('id', res);
   }
 
-  @Patch()
-  async updateById(@Body() updateMenuDto: UpdateMenuDto) {
-    await this.menuService.updateById(updateMenuDto);
+  @Patch(':id')
+  async updateById(
+    @Param() params: ParamsDto,
+    @Body() updateMenuDto: UpdateMenuDto,
+  ) {
+    await this.menuService.updateById(params.id, updateMenuDto);
     return this.responseService.updateOne('id', updateMenuDto.id);
   }
 
   @Patch('order')
-  async updateOrders(@Body() updateOrdersMenuDto: UpdateOrdersMenuDto) {
-    return await this.menuService.updateOrders(updateOrdersMenuDto.orders);
-    // return this.responseService.updateOne('id', updateMenuDto);
+  async updateOrders(@Body() dto: UpdateOrdersMenuDto) {
+    await this.menuService.updateOrders(dto.orders);
+    return this.responseService.updateList('orders');
   }
 
   @Delete(':id')
