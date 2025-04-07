@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,6 +14,10 @@ export class PageService {
     private readonly pageRepository: PageRepository,
   ) {}
   async createPage(createPageDto: CreatePageDto) {
+    const usedMenu = await this.findPageByMenuSlug(createPageDto.menuSlug);
+    if (usedMenu?.id) {
+      throw new HttpException('Menu already used', HttpStatus.BAD_REQUEST);
+    }
     const initPage = this.pageRepository.create(createPageDto);
     const savedPage = await this.pageRepository.save(initPage);
     return savedPage;
