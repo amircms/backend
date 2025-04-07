@@ -37,6 +37,9 @@ export class MenuService {
   async findOneById(id: ParamsDto['id']) {
     return await this.menuRepository.findOneBy({ id });
   }
+  async findOneBySlug(slug: CreateMenuDto['slug']) {
+    return await this.menuRepository.findOneBy({ slug });
+  }
 
   async updateById(id: ParamsDto['id'], updateMenuDto: UpdateMenuDto) {
     return await this.menuRepository.update(id, updateMenuDto);
