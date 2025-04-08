@@ -4,10 +4,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Entity,
-  OneToOne,
+  ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
-import { MenuEntity } from '../../menu/entities/menu.entity';
 
 @Entity({ name: 'pages' })
 export class PageEntity {
@@ -17,15 +17,18 @@ export class PageEntity {
   @Column()
   label: string;
 
-  @Column({ name: 'menuSlug', nullable: false, unique: true, type: 'varchar' })
-  menuSlug: string | null;
+  @Column({ name: 'slug', nullable: false, unique: true, type: 'varchar' })
+  slug: string;
 
-  @OneToOne(() => MenuEntity, (menu) => menu.slug, { onDelete: 'CASCADE' })
-  @JoinColumn({ referencedColumnName: 'slug', name: 'menuSlug' })
-  menu: MenuEntity;
+  @Column({ name: 'parentId', nullable: true })
+  parentId: string;
+
+  @ManyToOne(() => PageEntity, { onDelete: 'CASCADE', nullable: true })
+  @JoinColumn({ name: 'parentId' })
+  parent: PageEntity;
 
   @Column()
-  html: string;
+  content: string;
 
   @CreateDateColumn()
   createdAt: Date;

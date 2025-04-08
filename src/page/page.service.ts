@@ -14,9 +14,9 @@ export class PageService {
     private readonly pageRepository: PageRepository,
   ) {}
   async createPage(createPageDto: CreatePageDto) {
-    const usedMenu = await this.findPageByMenuSlug(createPageDto.menuSlug);
-    if (usedMenu?.id) {
-      throw new HttpException('Menu already used', HttpStatus.BAD_REQUEST);
+    const pageWidthUsedSlug = await this.findPageBySlug(createPageDto.slug);
+    if (pageWidthUsedSlug?.id) {
+      throw new HttpException('Slug already used', HttpStatus.BAD_REQUEST);
     }
     const initPage = this.pageRepository.create(createPageDto);
     const savedPage = await this.pageRepository.save(initPage);
@@ -30,8 +30,8 @@ export class PageService {
   async findPageById(id: ParamsDto['id']) {
     return await this.pageRepository.findOneBy({ id });
   }
-  async findPageByMenuSlug(menuSlug: CreatePageDto['menuSlug']) {
-    return await this.pageRepository.findOneBy({ menuSlug });
+  async findPageBySlug(slug: CreatePageDto['slug']) {
+    return await this.pageRepository.findOneBy({ slug });
   }
 
   async updatePageById(updatePageDto: UpdatePageDto) {

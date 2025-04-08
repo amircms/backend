@@ -1,14 +1,16 @@
-import { IsString } from 'class-validator';
-import { IsHTML } from '../../utils/IsHTML-class-validator-decorator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreatePageDto {
   @IsString()
   label: string;
 
   @IsString()
-  menuSlug: string;
+  slug: string;
+
+  @IsOptional()
+  @IsString()
+  parentId?: string;
 
   @IsString()
-  @IsHTML()
-  html: string;
+  content: string;
 }

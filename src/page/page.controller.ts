@@ -38,11 +38,9 @@ export class PageController {
     return this.responseService.findOne('id', res);
   }
 
-  @Get('slug/:menuSlug')
-  async findPageByMenuSlug(
-    @Param('menuSlug') menuSlug: CreatePageDto['menuSlug'],
-  ) {
-    const res = await this.pageService.findPageByMenuSlug(menuSlug);
+  @Get('slug/:slug')
+  async findPageByMenuSlug(@Param('menuSlug') slug: CreatePageDto['slug']) {
+    const res = await this.pageService.findPageBySlug(slug);
     return this.responseService.findOne('slug', res);
   }
 
