@@ -31,6 +31,11 @@ export class PageController {
     const res = await this.pageService.findAllPages();
     return this.responseService.findList('Menu', res);
   }
+  @Get('findParents/:id')
+  async findParentsPagesById(@Param() params: ParamsDto) {
+    const res = await this.pageService.findParentsPagesById(params.id);
+    return this.responseService.findList('Menu', res);
+  }
 
   @Get(':id')
   async findPageById(@Param() params: ParamsDto) {

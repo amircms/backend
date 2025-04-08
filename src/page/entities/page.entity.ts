@@ -6,7 +6,6 @@ import {
   Entity,
   ManyToOne,
   JoinColumn,
-  OneToMany,
 } from 'typeorm';
 
 @Entity({ name: 'pages' })

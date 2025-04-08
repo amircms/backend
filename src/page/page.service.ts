@@ -27,6 +27,31 @@ export class PageService {
     return await this.pageRepository.find();
   }
 
+  async findParentsPagesById(id: ParamsDto['id']) {
+    let parents: PageEntity[] = [];
+    if (id) {
+      const allPages = await this.pageRepository.find();
+      const idsToExclude = new Set<string>();
+
+      const findChildren = (parentId: string) => {
+        for (const page of allPages) {
+          if (page.parentId === parentId) {
+            idsToExclude.add(page.id);
+            findChildren(page.id); // recursive
+          }
+        }
+      };
+
+      findChildren(id);
+      idsToExclude.add(id); // اگر خود صفحه رو هم بخوای حذف کنی
+
+      parents = allPages.filter((page) => !idsToExclude.has(page.id));
+    } else {
+      parents = await this.pageRepository.find();
+    }
+    return parents;
+  }
+
   async findPageById(id: ParamsDto['id']) {
     return await this.pageRepository.findOneBy({ id });
   }
