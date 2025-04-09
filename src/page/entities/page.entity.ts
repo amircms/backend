@@ -26,7 +26,7 @@ export class PageEntity {
   @JoinColumn({ name: 'parentId' })
   parent: PageEntity;
 
-  @Column()
+  @Column({ type: 'text' })
   content: string;
 
   @CreateDateColumn()
