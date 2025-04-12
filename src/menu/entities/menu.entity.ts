@@ -1,3 +1,4 @@
+import { PageEntity } from '../../page/entities/page.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,7 +8,6 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  Check,
 } from 'typeorm';
 
 @Entity({ name: 'menus' })
@@ -21,7 +21,7 @@ export class MenuEntity {
   @Column({ type: 'int', generated: 'increment' })
   order: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, length: 255 })
   slug: string;
 
   @Column({ name: 'parentId', nullable: true, type: 'uuid' })
@@ -31,8 +31,8 @@ export class MenuEntity {
   @JoinColumn({ name: 'parentId' })
   parent: MenuEntity | null;
 
-  @OneToMany(() => MenuEntity, (menu) => menu.id)
-  children: MenuEntity[];
+  @OneToMany(() => PageEntity, (page) => page.id)
+  pages: PageEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

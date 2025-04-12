@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { ParamsDto } from './dto/params.dto';
@@ -17,6 +17,10 @@ export class MenuService {
 
   async create(createMenuDto: CreateMenuDto) {
     try {
+      const menu = await this.findOneBySlug(createMenuDto.slug);
+      if (menu?.id) {
+        throw new BadRequestException('Slug already used');
+      }
       const initMenu = this.menuRepository.create(createMenuDto);
       const savedMenu = await this.menuRepository.save(initMenu);
       return omit(savedMenu, ['parent', 'children']);
@@ -43,6 +47,31 @@ export class MenuService {
 
   async updateById(id: ParamsDto['id'], updateMenuDto: UpdateMenuDto) {
     return await this.menuRepository.update(id, updateMenuDto);
+  }
+
+  async findParentsMenusById(id: ParamsDto['id']) {
+    let parents: MenuEntity[] = [];
+    if (id) {
+      const allMenus = await this.menuRepository.find();
+      const idsToExclude = new Set<string>();
+
+      const findChildren = (parentId: string) => {
+        for (const menu of allMenus) {
+          if (menu.parentId === parentId) {
+            idsToExclude.add(menu.id);
+            findChildren(menu.id); // recursive
+          }
+        }
+      };
+
+      findChildren(id);
+      idsToExclude.add(id); // اگر خود صفحه رو هم بخوای حذف کنی
+
+      parents = allMenus.filter((page) => !idsToExclude.has(page.id));
+    } else {
+      parents = await this.menuRepository.find();
+    }
+    return parents;
   }
 
   async updateOrders(orders: UpdateOrdersMenuDto['orders']) {

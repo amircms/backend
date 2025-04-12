@@ -11,6 +11,8 @@ import { ResponseService } from './response/response.service';
 import { SettingModule } from './setting/setting.module';
 // import { UserEntity } from './user/entities/user.entity';
 import { SettingEntity } from './setting/entities/setting.entity';
+import { MenuModule } from './menu/menu.module';
+import { MenuEntity } from './menu/entities/menu.entity';
 
 @Module({
   imports: [
@@ -21,10 +23,11 @@ import { SettingEntity } from './setting/entities/setting.entity';
       username: 'postgres',
       password: 'postgres',
       database: 'amircms',
-      entities: [PageEntity, SettingEntity],
+      entities: [PageEntity, SettingEntity, MenuEntity],
       synchronize: true,
     }),
     PageModule,
+    MenuModule,
     SettingModule,
   ],
   providers: [ResponseService],

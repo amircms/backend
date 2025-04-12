@@ -48,6 +48,12 @@ export class MenuController {
     return this.responseService.updateOne('id', updateMenuDto.id);
   }
 
+  @Get('findParents/:id')
+  async findParentsPagesById(@Param() params: ParamsDto) {
+    const res = await this.menuService.findParentsMenusById(params.id);
+    return this.responseService.findList('Menu', res);
+  }
+
   @Patch('order')
   async updateOrders(@Body() dto: UpdateOrdersMenuDto) {
     await this.menuService.updateOrders(dto.orders);

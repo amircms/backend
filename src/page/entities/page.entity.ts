@@ -1,3 +1,4 @@
+import { MenuEntity } from 'src/menu/entities/menu.entity';
 import {
   Column,
   PrimaryGeneratedColumn,
@@ -20,11 +21,14 @@ export class PageEntity {
   slug: string;
 
   @Column({ name: 'parentId', nullable: true })
-  parentId: string;
+  menuId: string;
 
-  @ManyToOne(() => PageEntity, { onDelete: 'CASCADE', nullable: true })
-  @JoinColumn({ name: 'parentId' })
-  parent: PageEntity;
+  @ManyToOne(() => MenuEntity, (menu) => menu.pages, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'menuId' })
+  menu: MenuEntity | null;
 
   @Column({ type: 'text' })
   content: string;
