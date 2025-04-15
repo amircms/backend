@@ -4,7 +4,7 @@ import { UpdatePageDto } from './dto/update-page.dto';
 import { ParamsDto } from './dto/params.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PageEntity } from './entities/page.entity';
-import { ILike, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { PageStatusEnum } from '../enums';
 
 @Injectable()
@@ -28,27 +28,41 @@ export class PagesService {
     return await this.pageRepository.save(initPage);
   }
 
-  async findAll(query?: {
-    status?: PageStatusEnum;
-    search?: string;
-    skip?: number;
-    take?: number;
-    order?: 'ASC' | 'DESC';
-  }) {
-    const { status, search, skip = 0, take = 20, order = 'DESC' } = query || {};
+  async findAll(): Promise<PageEntity[]> {
+    return this.pageRepository.find();
+  }
 
+  async findForTable({
+    page = 1,
+    inPage = 10,
+    status,
+    searchTerm,
+  }: {
+    page: number;
+    inPage: number;
+    status?: PageStatusEnum;
+    searchTerm?: string;
+  }): Promise<{ data: PageEntity[]; total: number }> {
     const where: any = {};
-    if (status) where.status = status;
-    if (search) {
-      where.title = ILike(`%${search}%`);
+
+    if (status) {
+      where.status = status;
     }
 
-    return await this.pageRepository.find({
+    if (searchTerm) {
+      where.title = searchTerm;
+    }
+
+    const [data, total] = await this.pageRepository.findAndCount({
       where,
-      skip,
-      take,
-      order: { createdAt: order },
+      take: inPage,
+      skip: (page - 1) * inPage,
+      order: {
+        createdAt: 'DESC',
+      },
     });
+
+    return { data, total };
   }
 
   async findById(id: ParamsDto['id']) {
@@ -74,9 +88,8 @@ export class PagesService {
     return await this.pageRepository.delete(id);
   }
 
-  async changeStatus(id: ParamsDto['id'], status: PageStatusEnum) {
+  async changeStatus(id: ParamsDto['id']) {
     const page = await this.findById(id);
-    page.status = status;
     return await this.pageRepository.save(page);
   }
 }

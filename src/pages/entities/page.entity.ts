@@ -1,14 +1,16 @@
+import { GjsComponent, GjsStyle } from '../../types';
 import { PageStatusEnum } from '../../enums';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  BaseEntity,
   CreateDateColumn,
   UpdateDateColumn,
-  BaseEntity,
+  Index,
 } from 'typeorm';
 
-@Entity({ name: 'pages' })
+@Entity('pages')
 export class PageEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -16,17 +18,27 @@ export class PageEntity extends BaseEntity {
   @Column()
   title: string;
 
+  @Index()
   @Column({ unique: true })
   slug: string;
 
-  @Column({ nullable: true, type: 'text' })
-  content?: string;
+  @Column({ type: 'text', nullable: true })
+  htmlContent?: string;
 
-  @Column({ nullable: true, type: 'json' })
+  @Column({ type: 'text', nullable: true })
+  cssContent?: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  gjsComponents?: GjsComponent[];
+
+  @Column({ type: 'jsonb', nullable: true })
+  gjsStyles?: GjsStyle[];
+
+  @Column({ type: 'json', nullable: true })
   meta?: Record<string, any>;
 
-  @Column({ default: 'draft', enum: PageStatusEnum })
-  status?: PageStatusEnum;
+  @Column({ default: PageStatusEnum.DRAFT, enum: PageStatusEnum })
+  status: PageStatusEnum;
 
   @Column({ default: true })
   isActive: boolean;

@@ -1,16 +1,44 @@
-import { IsEnum, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsArray,
+  ValidateNested,
+  IsObject,
+} from 'class-validator';
 import { PageStatusEnum } from '../../enums';
+import { GjsComponent, GjsStyle } from '../../types';
 
 export class CreatePageDto {
   @IsString()
+  @IsNotEmpty()
   title: string;
 
   @IsString()
+  @IsNotEmpty()
   slug: string;
 
   @IsOptional()
   @IsString()
-  content?: string;
+  htmlContent?: string;
+
+  @IsOptional()
+  @IsString()
+  cssContent?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true }) // اعتبارسنجی تمام اعضای آرایه
+  // @IsObject({ each: false }) // اطمینان از اینکه هر عنصر از نوع شیء است
+  gjsComponents?: GjsComponent[];
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true }) // اعتبارسنجی تمام اعضای آرایه
+  // @IsObject({ each: false }) // اطمینان از اینکه هر عنصر از نوع شیء است
+  gjsStyles?: GjsStyle[];
 
   @IsOptional()
   @IsObject()
@@ -18,5 +46,9 @@ export class CreatePageDto {
 
   @IsOptional()
   @IsEnum(PageStatusEnum)
-  status: PageStatusEnum;
+  status?: PageStatusEnum;
+
+  @IsOptional()
+  @IsBoolean()
+  isActive?: boolean;
 }

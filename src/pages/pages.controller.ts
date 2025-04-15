@@ -12,6 +12,7 @@ import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { ParamsDto } from './dto/params.dto';
 import { ResponseService } from '../response/response.service';
+import { PageStatusEnum } from '../enums';
 
 @Controller('pages')
 export class PagesController {
@@ -30,6 +31,20 @@ export class PagesController {
   async findAll() {
     const result = await this.pagesService.findAll();
     return this.responseService.findList('Page', result);
+  }
+
+  @Get()
+  async findForTable(
+    @Body()
+    dto: {
+      page: number;
+      inPage: number;
+      status?: PageStatusEnum;
+      searchTerm?: string;
+    },
+  ) {
+    const result = await this.pagesService.findForTable(dto);
+    return this.responseService.findList('Page Table', result);
   }
 
   @Get(':id')
