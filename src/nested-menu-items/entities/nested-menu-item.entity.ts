@@ -22,22 +22,28 @@ export class NestedMenuItemEntity extends BaseEntity {
   title: string;
 
   @Column({ default: 0 })
-  sortOrder: number;
+  sort: number;
 
-  @Column()
-  menuItemId: string;
-
-  @ManyToOne(() => MenuItemEntity, { eager: true })
-  @JoinColumn({ name: 'menuItemId' })
-  menuItem: MenuItemEntity;
-
-  @ManyToOne(() => MenuEntity, (menu) => menu.items)
-  @JoinColumn({ name: 'menuId' })
-  menu: MenuEntity;
+  @Column({ nullable: true })
+  parentId?: NestedMenuItemEntity['id'];
 
   @TreeChildren()
   children?: NestedMenuItemEntity[];
 
   @TreeParent()
   parent?: NestedMenuItemEntity;
+
+  @Column()
+  menuItemId: MenuItemEntity['id'];
+
+  @ManyToOne(() => MenuItemEntity)
+  @JoinColumn({ name: 'menuItemId', referencedColumnName: 'id' })
+  menuItem: MenuItemEntity;
+
+  @Column()
+  MenuId: MenuEntity['id'];
+
+  @ManyToOne(() => MenuEntity)
+  @JoinColumn({ name: 'MenuId', referencedColumnName: 'id' })
+  menu: MenuEntity;
 }

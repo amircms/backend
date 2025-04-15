@@ -19,10 +19,10 @@ export class MenuItemEntity extends BaseEntity {
   title: string;
 
   @Column({ nullable: true })
-  pageId?: string;
+  pageSlug?: PageEntity['slug'];
 
   @ManyToOne(() => PageEntity, { nullable: true, eager: true })
-  @JoinColumn({ name: 'pageId' })
+  @JoinColumn({ name: 'pageSlug', referencedColumnName: 'slug' })
   page?: PageEntity;
 
   @CreateDateColumn()
