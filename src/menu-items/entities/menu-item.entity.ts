@@ -2,15 +2,15 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  BaseEntity,
   ManyToOne,
   JoinColumn,
+  BaseEntity,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { PageEntity } from '../../pages/entities/page.entity';
 
-@Entity({ name: 'menu_item' })
+@Entity('menu_items')
 export class MenuItemEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -19,14 +19,11 @@ export class MenuItemEntity extends BaseEntity {
   title: string;
 
   @Column({ nullable: true })
-  pageSlug?: PageEntity['slug'];
+  pageId?: string;
 
-  @ManyToOne(() => PageEntity, { eager: false })
-  @JoinColumn({ name: 'pageSlug', referencedColumnName: 'slug' })
+  @ManyToOne(() => PageEntity, { nullable: true, eager: true })
+  @JoinColumn({ name: 'pageId' })
   page?: PageEntity;
-
-  @Column({ default: true })
-  isActive: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

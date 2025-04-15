@@ -22,7 +22,7 @@ export class MenuItemsService {
 
   async findAll() {
     return await this.menuItemRepository.find({
-      relations: ['page'],
+      // relations: ['page', 'page.slug'],
     });
   }
 
@@ -41,8 +41,8 @@ export class MenuItemsService {
   async updateById(id: ParamsDto['id'], dto: UpdateMenuItemDto) {
     const item = await this.findById(id);
 
-    if (dto.pageSlug) {
-      const page = await this.pageService.findBySlug(dto.pageSlug);
+    if (dto.pageId) {
+      const page = await this.pageService.findBySlug(dto.pageId);
       if (!page) {
         throw new HttpException('Page not found', HttpStatus.NOT_FOUND);
       }
