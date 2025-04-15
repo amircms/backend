@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   BaseEntity,
 } from 'typeorm';
-import { NestedMenuItemEntity } from '../../menu-items/entities/nested-menu-item.entity';
+import { NestedMenuItemEntity } from './nested-menu-item.entity';
 
 @Entity({ name: 'menus' })
 export class MenuEntity extends BaseEntity {
@@ -17,7 +17,13 @@ export class MenuEntity extends BaseEntity {
   @Column()
   title: string;
 
-  @OneToMany(() => NestedMenuItemEntity, (menuItem) => menuItem.menu)
+  @OneToMany(
+    () => NestedMenuItemEntity,
+    (nestedMenuItem) => nestedMenuItem.menu,
+    {
+      cascade: true,
+    },
+  )
   items: NestedMenuItemEntity[];
 
   @Column({ default: true })

@@ -8,13 +8,15 @@ export class CreatePageDto {
   @IsString()
   slug: string;
 
+  @IsOptional()
   @IsString()
-  content: string;
+  content?: string;
 
   @IsOptional()
   @IsObject()
   meta?: Record<string, any>;
 
+  @IsOptional()
   @IsEnum(PageStatusEnum)
   status: PageStatusEnum;
 }

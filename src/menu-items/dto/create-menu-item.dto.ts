@@ -15,7 +15,7 @@ export class CreateMenuItemDto {
   @IsOptional()
   @IsNumber()
   @IsInt()
-  order: number;
+  sortOrder: number;
 
   @IsOptional()
   @IsString()

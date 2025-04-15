@@ -7,6 +7,7 @@ import { MenusModule } from './menus/menus.module';
 import { PageEntity } from './pages/entities/page.entity';
 import { MenuItemEntity } from './menu-items/entities/menu-item.entity';
 import { MenuEntity } from './menus/entities/menu.entity';
+import { NestedMenuItemEntity } from './menus/entities/nested-menu-item.entity';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { MenuEntity } from './menus/entities/menu.entity';
       username: 'postgres',
       password: 'postgres',
       database: 'amircms',
-      entities: [PageEntity, MenuItemEntity, MenuEntity],
+      entities: [PageEntity, MenuItemEntity, MenuEntity, NestedMenuItemEntity],
       synchronize: true,
     }),
     PagesModule,

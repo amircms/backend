@@ -35,7 +35,7 @@ export class MenusService {
   async findById(id: ParamsDto['id']) {
     const menu = await this.menuRepository.findOne({
       where: { id },
-      relations: ['items', 'items.children', 'items.page'],
+      relations: ['items', 'items.page'],
     });
 
     if (!menu) {

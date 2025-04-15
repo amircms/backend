@@ -6,14 +6,11 @@ import {
   UpdateDateColumn,
   BaseEntity,
   ManyToOne,
-  TableInheritance,
-  OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { PageEntity } from '../../pages/entities/page.entity';
-import { MenuEntity } from '../../menus/entities/menu.entity';
 
 @Entity({ name: 'menu_item' })
-@TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export class MenuItemEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -21,20 +18,12 @@ export class MenuItemEntity extends BaseEntity {
   @Column()
   title: string;
 
-  @Column()
-  order: number;
-
-  @Column({ nullable: true })
-  url?: string;
-
   @Column({ nullable: true })
   pageSlug?: PageEntity['slug'];
 
-  @ManyToOne(() => PageEntity, { nullable: true })
+  @ManyToOne(() => PageEntity, { eager: false })
+  @JoinColumn({ name: 'pageSlug', referencedColumnName: 'slug' })
   page?: PageEntity;
-
-  @ManyToOne(() => MenuEntity, (menu) => menu.items, { nullable: true })
-  menu?: MenuEntity;
 
   @Column({ default: true })
   isActive: boolean;

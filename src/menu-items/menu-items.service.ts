@@ -22,15 +22,14 @@ export class MenuItemsService {
 
   async findAll() {
     return await this.menuItemRepository.find({
-      relations: ['menu', 'page', 'parent', 'children'],
-      order: { order: 'ASC' },
+      relations: ['page'],
     });
   }
 
   async findById(id: ParamsDto['id']) {
     const item = await this.menuItemRepository.findOne({
       where: { id },
-      relations: ['menu', 'page', 'parent', 'children'],
+      relations: ['page'],
     });
 
     if (!item) {

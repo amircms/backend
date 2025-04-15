@@ -19,14 +19,14 @@ export class PageEntity extends BaseEntity {
   @Column({ unique: true })
   slug: string;
 
-  @Column('text')
-  content: string;
+  @Column({ nullable: true, type: 'text' })
+  content?: string;
 
   @Column({ nullable: true, type: 'json' })
   meta?: Record<string, any>;
 
   @Column({ default: 'draft', enum: PageStatusEnum })
-  status: PageStatusEnum;
+  status?: PageStatusEnum;
 
   @Column({ default: true })
   isActive: boolean;
