@@ -2,14 +2,14 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany,
+  BaseEntity,
   CreateDateColumn,
   UpdateDateColumn,
-  BaseEntity,
+  OneToMany,
 } from 'typeorm';
-import { NestedMenuItemEntity } from './nested-menu-item.entity';
+import { NestedMenuItemEntity } from '../../nested-menu-items/entities/nested-menu-item.entity';
 
-@Entity({ name: 'menus' })
+@Entity('menus')
 export class MenuEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -17,17 +17,11 @@ export class MenuEntity extends BaseEntity {
   @Column()
   title: string;
 
-  @OneToMany(
-    () => NestedMenuItemEntity,
-    (nestedMenuItem) => nestedMenuItem.menu,
-    {
-      cascade: true,
-    },
-  )
+  @OneToMany(() => NestedMenuItemEntity, (item) => item.menu, {
+    cascade: true,
+    eager: true,
+  })
   items: NestedMenuItemEntity[];
-
-  @Column({ default: true })
-  isActive: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

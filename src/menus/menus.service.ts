@@ -23,12 +23,13 @@ export class MenusService {
     }
 
     const menu = this.menuRepository.create(dto);
+    console.log('🚀 ~ MenusService ~ create ~ menu:', menu);
     return await this.menuRepository.save(menu);
   }
 
   async findAll() {
     return await this.menuRepository.find({
-      relations: ['items', 'items.children', 'items.page'],
+      relations: ['items', 'items.children'],
     });
   }
 
