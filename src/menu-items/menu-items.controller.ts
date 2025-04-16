@@ -17,8 +17,8 @@ export class MenuItemsController {
   constructor(private readonly menuItemsService: MenuItemsService) {}
 
   @Post()
-  create(@Body() createMenuItemDto: CreateMenuItemDto) {
-    return this.menuItemsService.create(createMenuItemDto);
+  create(@Body() createNestedMenuItemDto: CreateMenuItemDto) {
+    return this.menuItemsService.create(createNestedMenuItemDto);
   }
 
   @Get()

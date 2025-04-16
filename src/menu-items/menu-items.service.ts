@@ -1,60 +1,43 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateMenuItemDto } from './dto/create-menu-item.dto';
 import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
-import { ParamsDto } from './dto/params.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MenuItemEntity } from './entities/menu-item.entity';
 import { Repository } from 'typeorm';
-import { PagesService } from '../pages/pages.service';
+import { ParamsDto } from './dto/params.dto';
 
 @Injectable()
 export class MenuItemsService {
   constructor(
     @InjectRepository(MenuItemEntity)
     private readonly menuItemRepository: Repository<MenuItemEntity>,
-    private readonly pageService: PagesService,
   ) {}
-  async create(dto: CreateMenuItemDto) {
-    const item = this.menuItemRepository.create(dto);
 
-    return await this.menuItemRepository.save(item);
+  async create(dto: CreateMenuItemDto) {
+    const newMenuItem = this.menuItemRepository.create(dto);
+    await this.menuItemRepository.save(newMenuItem);
+    return newMenuItem;
   }
 
   async findAll() {
-    return await this.menuItemRepository.find({
-      // relations: ['page', 'page.slug'],
-    });
+    return await this.menuItemRepository.find();
   }
 
   async findById(id: ParamsDto['id']) {
-    const item = await this.menuItemRepository.findOne({
-      where: { id },
-      relations: ['page'],
-    });
-
-    if (!item) {
-      throw new HttpException('Menu item not found', HttpStatus.NOT_FOUND);
-    }
-
-    return item;
+    return await this.menuItemRepository.findOneBy({ id });
   }
+
   async updateById(id: ParamsDto['id'], dto: UpdateMenuItemDto) {
-    const item = await this.findById(id);
-
-    if (dto.pageId) {
-      const page = await this.pageService.findBySlug(dto.pageId);
-      if (!page) {
-        throw new HttpException('Page not found', HttpStatus.NOT_FOUND);
-      }
-      item.page = page;
+    const existingItem = await this.findById(id);
+    if (!existingItem) {
+      throw new Error(`MenuItem with id ${id} not found`);
     }
-
-    Object.assign(item, dto);
-    return await this.menuItemRepository.save(item);
+    const updatedItem = this.menuItemRepository.merge(existingItem, dto);
+    await this.menuItemRepository.save(updatedItem);
+    return updatedItem;
   }
 
   async deleteById(id: ParamsDto['id']) {
-    const item = await this.findById(id);
-    return await this.menuItemRepository.delete(item.id);
+    return this.menuItemRepository.delete(id);
   }
 }

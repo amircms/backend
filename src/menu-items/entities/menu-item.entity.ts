@@ -2,15 +2,18 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  BaseEntity,
   ManyToOne,
   JoinColumn,
-  BaseEntity,
-  CreateDateColumn,
-  UpdateDateColumn,
+  TreeChildren,
+  TreeParent,
+  Tree,
 } from 'typeorm';
-import { PageEntity } from '../../pages/entities/page.entity';
+import { MenuEntity } from '../../menus/entities/menu.entity';
+import { LinkEntity } from '../../links/entities/link.entity';
 
 @Entity('menu_items')
+@Tree('adjacency-list')
 export class MenuItemEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -18,16 +21,29 @@ export class MenuItemEntity extends BaseEntity {
   @Column()
   title: string;
 
+  @Column({ default: 0 })
+  sort: number;
+
   @Column({ nullable: true })
-  pageSlug?: PageEntity['slug'];
+  parentId?: MenuItemEntity['id'];
 
-  @ManyToOne(() => PageEntity, { nullable: true, eager: true })
-  @JoinColumn({ name: 'pageSlug', referencedColumnName: 'slug' })
-  page?: PageEntity;
+  @TreeChildren()
+  children?: MenuItemEntity[];
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @TreeParent()
+  parent?: MenuItemEntity;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @Column()
+  menuItemId: LinkEntity['id'];
+
+  @ManyToOne(() => LinkEntity)
+  @JoinColumn({ name: 'menuItemId', referencedColumnName: 'id' })
+  menuItem: LinkEntity;
+
+  @Column()
+  menuId: MenuEntity['id'];
+
+  @ManyToOne(() => MenuEntity)
+  @JoinColumn({ name: 'menuId', referencedColumnName: 'id' })
+  menu: MenuEntity;
 }
