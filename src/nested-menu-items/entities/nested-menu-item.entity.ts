@@ -5,15 +5,15 @@ import {
   BaseEntity,
   ManyToOne,
   JoinColumn,
-  Tree,
   TreeChildren,
   TreeParent,
+  Tree,
 } from 'typeorm';
 import { MenuEntity } from '../../menus/entities/menu.entity';
 import { MenuItemEntity } from '../../menu-items/entities/menu-item.entity';
 
 @Entity('nested_menu_items')
-@Tree('nested-set')
+@Tree('adjacency-list')
 export class NestedMenuItemEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -41,9 +41,9 @@ export class NestedMenuItemEntity extends BaseEntity {
   menuItem: MenuItemEntity;
 
   @Column()
-  MenuId: MenuEntity['id'];
+  menuId: MenuEntity['id'];
 
   @ManyToOne(() => MenuEntity)
-  @JoinColumn({ name: 'MenuId', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'menuId', referencedColumnName: 'id' })
   menu: MenuEntity;
 }
