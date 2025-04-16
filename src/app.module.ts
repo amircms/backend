@@ -7,8 +7,8 @@ import { MenusModule } from './menus/menus.module';
 import { PageEntity } from './pages/entities/page.entity';
 import { MenuItemEntity } from './menu-items/entities/menu-item.entity';
 import { MenuEntity } from './menus/entities/menu.entity';
-import { NestedMenuItemsModule } from './nested-menu-items/nested-menu-items.module';
-import { NestedMenuItemEntity } from './nested-menu-items/entities/nested-menu-item.entity';
+import { LinksModule } from './links/links.module';
+import { LinkEntity } from './links/entities/link.entity';
 
 @Module({
   imports: [
@@ -19,13 +19,13 @@ import { NestedMenuItemEntity } from './nested-menu-items/entities/nested-menu-i
       username: 'postgres',
       password: 'postgres',
       database: 'amircms',
-      entities: [PageEntity, MenuItemEntity, MenuEntity, NestedMenuItemEntity],
+      entities: [PageEntity, MenuItemEntity, MenuEntity, LinkEntity],
       synchronize: true,
     }),
     PagesModule,
     MenuItemsModule,
     MenusModule,
-    NestedMenuItemsModule,
+    LinksModule,
   ],
   providers: [ResponseService],
 })
