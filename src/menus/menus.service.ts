@@ -34,10 +34,7 @@ export class MenusService {
   }
 
   async findById(id: ParamsDto['id']) {
-    const menu = await this.menuRepository.findOne({
-      where: { id },
-      relations: ['items', 'items.page'],
-    });
+    const menu = await this.menuRepository.findOneBy({ id });
 
     if (!menu) {
       throw new HttpException('Menu not found', HttpStatus.NOT_FOUND);
@@ -47,9 +44,8 @@ export class MenusService {
   }
 
   async updateById(id: ParamsDto['id'], dto: UpdateMenuDto) {
-    const menu = await this.findById(id);
-    const updated = this.menuRepository.merge(menu, dto);
-    return await this.menuRepository.save(updated);
+    await this.findById(id);
+    return await this.menuRepository.update(id, dto);
   }
 
   async deleteById(id: ParamsDto['id']) {

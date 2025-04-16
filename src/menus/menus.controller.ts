@@ -33,6 +33,7 @@ export class MenusController {
 
   @Patch(':id')
   updateById(@Param() params: ParamsDto, @Body() dto: UpdateMenuDto) {
+    console.log('🚀 ~ MenusController ~ updateById ~ params:', params);
     return this.menusService.updateById(params.id, dto);
   }
 

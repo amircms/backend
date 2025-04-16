@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { NestedMenuItemEntity } from '../../nested-menu-items/entities/nested-menu-item.entity';
+import { MenuItemEntity } from '../../menu-items/entities/menu-item.entity';
 
 @Entity('menus')
 export class MenuEntity extends BaseEntity {
@@ -17,11 +17,11 @@ export class MenuEntity extends BaseEntity {
   @Column()
   title: string;
 
-  @OneToMany(() => NestedMenuItemEntity, (item) => item.menu, {
+  @OneToMany(() => MenuItemEntity, (item) => item.menu, {
     cascade: true,
     eager: true,
   })
-  items: NestedMenuItemEntity[];
+  items: MenuItemEntity[];
 
   @CreateDateColumn()
   createdAt: Date;
