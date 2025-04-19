@@ -9,6 +9,10 @@ import { MenuItemEntity } from './menu-items/entities/menu-item.entity';
 import { MenuEntity } from './menus/entities/menu.entity';
 import { LinksModule } from './links/links.module';
 import { LinkEntity } from './links/entities/link.entity';
+import { HeaderModule } from './header/header.module';
+import { FooterModule } from './footer/footer.module';
+import { HeaderEntity } from './header/entities/header.entity';
+import { FooterEntity } from './footer/entities/footer.entity';
 
 @Module({
   imports: [
@@ -19,13 +23,22 @@ import { LinkEntity } from './links/entities/link.entity';
       username: 'postgres',
       password: 'postgres',
       database: 'amircms',
-      entities: [PageEntity, MenuItemEntity, MenuEntity, LinkEntity],
+      entities: [
+        PageEntity,
+        MenuItemEntity,
+        MenuEntity,
+        LinkEntity,
+        HeaderEntity,
+        FooterEntity,
+      ],
       synchronize: true,
     }),
     PagesModule,
     MenuItemsModule,
     MenusModule,
     LinksModule,
+    HeaderModule,
+    FooterModule,
   ],
   providers: [ResponseService],
 })

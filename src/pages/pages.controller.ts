@@ -52,6 +52,11 @@ export class PagesController {
     const result = await this.pagesService.findById(params.id);
     return this.responseService.findOne('Page', result);
   }
+  @Get('slug/:slug')
+  async findBySlug(@Param() params: ParamsDto) {
+    const result = await this.pagesService.findBySlug(params.id);
+    return this.responseService.findOne('Page', result);
+  }
 
   @Patch(':id')
   async updateById(@Param() params: ParamsDto, @Body() dto: UpdatePageDto) {
