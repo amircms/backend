@@ -13,6 +13,8 @@ import { HeaderModule } from './header/header.module';
 import { FooterModule } from './footer/footer.module';
 import { HeaderEntity } from './header/entities/header.entity';
 import { FooterEntity } from './footer/entities/footer.entity';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import { FooterEntity } from './footer/entities/footer.entity';
     // LinksModule,
     HeaderModule,
     FooterModule,
+    UsersModule,
+    AuthModule,
   ],
   providers: [ResponseService],
 })
