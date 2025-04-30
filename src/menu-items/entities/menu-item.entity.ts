@@ -10,7 +10,8 @@ import {
   Tree,
 } from 'typeorm';
 import { MenuEntity } from '../../menus/entities/menu.entity';
-import { LinkEntity } from '../../links/entities/link.entity';
+import { PageEntity } from '../../pages/entities/page.entity';
+// import { LinkEntity } from '../../links/entities/link.entity';
 
 @Entity('menu_items')
 @Tree('adjacency-list')
@@ -34,11 +35,11 @@ export class MenuItemEntity extends BaseEntity {
   parent?: MenuItemEntity;
 
   @Column()
-  menuItemId: LinkEntity['id'];
+  pageSlug: PageEntity['slug'];
 
-  @ManyToOne(() => LinkEntity)
-  @JoinColumn({ name: 'menuItemId', referencedColumnName: 'id' })
-  menuItem: LinkEntity;
+  @ManyToOne(() => PageEntity)
+  @JoinColumn({ name: 'pageSlug', referencedColumnName: 'slug' })
+  page: PageEntity;
 
   @Column()
   menuId: MenuEntity['id'];

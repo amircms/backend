@@ -7,8 +7,8 @@ import { MenusModule } from './menus/menus.module';
 import { PageEntity } from './pages/entities/page.entity';
 import { MenuItemEntity } from './menu-items/entities/menu-item.entity';
 import { MenuEntity } from './menus/entities/menu.entity';
-import { LinksModule } from './links/links.module';
-import { LinkEntity } from './links/entities/link.entity';
+// import { LinksModule } from './links/links.module';
+// import { LinkEntity } from './links/entities/link.entity';
 import { HeaderModule } from './header/header.module';
 import { FooterModule } from './footer/footer.module';
 import { HeaderEntity } from './header/entities/header.entity';
@@ -27,7 +27,7 @@ import { FooterEntity } from './footer/entities/footer.entity';
         PageEntity,
         MenuItemEntity,
         MenuEntity,
-        LinkEntity,
+        // LinkEntity,
         HeaderEntity,
         FooterEntity,
       ],
@@ -36,7 +36,7 @@ import { FooterEntity } from './footer/entities/footer.entity';
     PagesModule,
     MenuItemsModule,
     MenusModule,
-    LinksModule,
+    // LinksModule,
     HeaderModule,
     FooterModule,
   ],
